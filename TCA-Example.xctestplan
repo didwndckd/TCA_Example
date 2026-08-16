@@ -1,0 +1,39 @@
+{
+  "configurations" : [
+    {
+      "id" : "D51015CA-B038-46C8-A38A-31384A776367",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "performanceAntipatternCheckerEnabled" : true,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:TCA-Example.xcodeproj",
+      "identifier" : "311F006930278D1400146D7D",
+      "name" : "TCA-Example"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:TCA-Example.xcodeproj",
+        "identifier" : "311F007630278D1600146D7D",
+        "name" : "TCA-ExampleTests"
+      }
+    },
+    {
+      "enabled" : false,
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:TCA-Example.xcodeproj",
+        "identifier" : "311F008030278D1600146D7D",
+        "name" : "TCA-ExampleUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

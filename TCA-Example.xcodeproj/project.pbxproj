@@ -31,6 +31,7 @@
 		311F006A30278D1400146D7D /* TCA-Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TCA-Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		311F007730278D1600146D7D /* TCA-ExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TCA-ExampleTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		311F008130278D1600146D7D /* TCA-ExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TCA-ExampleUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3146071B3031EF0D00B19328 /* TCA-Example.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TCA-Example.xctestplan"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -93,6 +94,7 @@
 		311F006130278D1400146D7D = {
 			isa = PBXGroup;
 			children = (
+				3146071B3031EF0D00B19328 /* TCA-Example.xctestplan */,
 				311F006C30278D1400146D7D /* TCA-Example */,
 				311F007A30278D1600146D7D /* TCA-ExampleTests */,
 				311F008430278D1600146D7D /* TCA-ExampleUITests */,

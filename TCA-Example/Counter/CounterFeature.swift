@@ -11,7 +11,7 @@ import ComposableArchitecture
 @Reducer
 struct CounterFeature {
     @ObservableState
-    struct State {
+    struct State: Equatable {
         var count = 0
         var fact: String?
         var isLoading = false
@@ -31,6 +31,9 @@ struct CounterFeature {
         case timer
     }
     
+    @Dependency(\.continuousClock) private var clock
+    @Dependency(\.numberFact) private var numberFact
+    
     var body: some ReducerOf<Self> { // some Reducer<State, Action>와 같음
         Reduce { state, action in
             switch action {
@@ -45,10 +48,11 @@ struct CounterFeature {
                 
                 return .run(
                     operation: { [count = state.count] send in
-                        let url = URL(string: "http://number-trivia.com/\(count)")!
-                        let (data, _) = try await URLSession.shared.data(from: url)
-                        let fact = String(decoding: data, as: UTF8.self)
+                        let fact = try await self.numberFact.fetch(count)
                         await send(.factResponse(fact))
+                        
+                        // 이렇게도 가능
+//                        try await send(.factResponse(self.numberFact.fetch(count)))
                     },
                     catch: { error, send in
                         let message = "❌ERROR: \(error.localizedDescription)"
@@ -76,8 +80,7 @@ struct CounterFeature {
                     // 타이머 돌리기 with CancelID
                     return .run(
                         operation: { send in
-                            while true {
-                                try await Task.sleep(for: .seconds(1))
+                            for await _ in self.clock.timer(interval: .seconds(1)) {
                                 await send(.timerTick)
                             }
                         },
