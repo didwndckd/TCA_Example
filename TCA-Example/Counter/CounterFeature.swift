@@ -57,7 +57,8 @@ struct CounterFeature {
                     catch: { error, send in
                         let message = "❌ERROR: \(error.localizedDescription)"
                         await send(.factResponse(message))
-                    })
+                    }
+                )
                 
             case .factResponse(let fact):
                 state.fact = fact
@@ -76,24 +77,23 @@ struct CounterFeature {
                 
             case .toggleTimerButtonTapped:
                 state.isTimerRunning.toggle()
-                if state.isTimerRunning {
-                    // 타이머 돌리기 with CancelID
-                    return .run(
-                        operation: { send in
-                            for await _ in self.clock.timer(interval: .seconds(1)) {
-                                await send(.timerTick)
-                            }
-                        },
-                        catch: { error, send in
-                            print("Timer run error: \(error)")
-                        }
-                    )
-                    .cancellable(id: CancelID.timer)
-                            
-                } else {
+                guard state.isTimerRunning else {
                     // 타이머 돌리던거 취소
                     return .cancel(id: CancelID.timer)
                 }
+                
+                // 타이머 돌리기 with CancelID
+                return .run(
+                    operation: { send in
+                        for await _ in self.clock.timer(interval: .seconds(1)) {
+                            await send(.timerTick)
+                        }
+                    },
+                    catch: { error, send in
+                        print("Timer run error: \(error)")
+                    }
+                )
+                .cancellable(id: CancelID.timer)
             }
         }
     }
