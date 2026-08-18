@@ -18,6 +18,9 @@ struct AppView: View {
             
             CounterView(store: store.scope(\.tab2, action: \.tab2))
                 .tabItem { Text("Counter 2") }
+            
+            ContactsView(store: store.scope(\.tab3, action: \.tab3))
+                .tabItem { Text("Counter 3") }
         }
     }
 }
