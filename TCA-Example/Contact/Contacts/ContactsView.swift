@@ -19,10 +19,14 @@ struct ContactsView: View {
                 ToolbarItem { plusButton }
             }
         }
-        .sheet(item: $store.scope(\.addContact, action: \.addContact)) { addContactStore in
+        .sheet(item: $store.scope(\.$destination, action: \.destination).addContact) { addContactStore in
             addContactView(store: addContactStore)
         }
-        .alert($store.scope(\.alert, action: \.alert))
+        .alert($store.scope(\.$destination, action: \.destination).alert) { value in
+            guard let value else { return }
+            store.send(.destination(.presented(.alert(value))))
+        }
+//        .alert($store.scope(\.alert, action: \.alert)) <- deprecated 되었다고 나옴
     }
     
     private var list: some View {

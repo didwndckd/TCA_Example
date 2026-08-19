@@ -17,15 +17,14 @@ struct Contact: Equatable, Identifiable {
 struct ContactsFeature {
     @ObservableState
     struct State: Equatable {
-        @Presents var addContact: AddContactFeature.State?
-        @Presents var alert: AlertState<Action.Alert>?
         var contacts: IdentifiedArrayOf<Contact> = []
+        
+        @Presents var destination: Destination.State?
     }
     
     enum Action {
         case addButtonTapped
-        case addContact(PresentationAction<AddContactFeature.Action>)
-        case alert(PresentationAction<Alert>)
+        case destination(PresentationAction<Destination.Action>)
         case deleteButtonTapped(id: Contact.ID)
         
         enum Alert: Equatable {
@@ -38,54 +37,53 @@ struct ContactsFeature {
             switch action {
             case .addButtonTapped:
                 let contact = Contact(id: UUID(), name: "")
-                state.addContact = AddContactFeature.State(contact: contact)
+                let addContactState = AddContactFeature.State(contact: contact)
+                state.destination = .addContact(addContactState)
                 return .none
                 
-//            case .addContact(.presented(.delegate(.cancel))):
-//                // AddContactView -> 닫기 이벤트 콜백
-//                state.addContact = nil
-//                return .none
-                
-            case .addContact(.presented(.delegate(.saveContact(let contact)))):
-                // AddContactView -> Save 버튼 눌렀을 때 콜백
-//                guard let contact = state.addContact?.contact else { return .none }
-                
+            case .destination(.presented(.addContact(.delegate(.saveContact(let contact))))):
                 state.contacts.append(contact)
-//                state.addContact = nil
                 return .none
                 
-            case .addContact:
-                return .none
-                
-            case .alert(.presented(.confirmDeletetion(id: let id))):
-                // Alert의 콜백
+            case .destination(.presented(.alert(.confirmDeletetion(id: let id)))):
                 state.contacts.remove(id: id)
                 return .none
-            
-            case .alert:
+                
+            case .destination:
                 return .none
                 
             case .deleteButtonTapped(id: let id):
-                state.alert = AlertState(
+                let alertState = AlertState(
                     title: {
                         TextState("Are you sure?")
                     },
                     actions: {
                         ButtonState(
                             role: .destructive,
-                            action: .confirmDeletetion(id: id),
+                            action: ContactsFeature.Action.Alert.confirmDeletetion(id: id),
                             label: {
                                 TextState("Delete")
                             }
                         )
                     }
                 )
+                
+                state.destination = .alert(alertState)
                 return .none
             }
         }
-        .ifLet(\.$addContact, action: \.addContact) { // AddContactView 띄울 때
-            AddContactFeature()
+        .ifLet(\.$destination, action: \.destination) {
+            Destination.body
         }
-        .ifLet(\.$alert, action: \.alert)
     }
 }
+
+extension ContactsFeature {
+    @Reducer
+    enum Destination {
+        case addContact(AddContactFeature)
+        case alert(AlertState<ContactsFeature.Action.Alert>)
+    }
+}
+
+extension ContactsFeature.Destination.State: Equatable {}
