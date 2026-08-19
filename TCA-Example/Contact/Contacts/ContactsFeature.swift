@@ -27,16 +27,19 @@ struct ContactsFeature {
         case destination(PresentationAction<Destination.Action>)
         case deleteButtonTapped(id: Contact.ID)
         
+        @CasePathable
         enum Alert: Equatable {
             case confirmDeletetion(id: Contact.ID)
         }
     }
     
+    @Dependency(\.uuid) var uuid
+    
     var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
             case .addButtonTapped:
-                let contact = Contact(id: UUID(), name: "")
+                let contact = Contact(id: self.uuid(), name: "")
                 let addContactState = AddContactFeature.State(contact: contact)
                 state.destination = .addContact(addContactState)
                 return .none
@@ -53,22 +56,7 @@ struct ContactsFeature {
                 return .none
                 
             case .deleteButtonTapped(id: let id):
-                let alertState = AlertState(
-                    title: {
-                        TextState("Are you sure?")
-                    },
-                    actions: {
-                        ButtonState(
-                            role: .destructive,
-                            action: ContactsFeature.Action.Alert.confirmDeletetion(id: id),
-                            label: {
-                                TextState("Delete")
-                            }
-                        )
-                    }
-                )
-                
-                state.destination = .alert(alertState)
+                state.destination = .alert(.deleteConfirmation(id: id))
                 return .none
             }
         }
@@ -87,3 +75,22 @@ extension ContactsFeature {
 }
 
 extension ContactsFeature.Destination.State: Equatable {}
+
+extension AlertState where Action == ContactsFeature.Action.Alert {
+    static func deleteConfirmation(id: UUID) -> Self {
+        Self(
+            title: {
+                TextState("Are you sure?")
+            },
+            actions: {
+                ButtonState(
+                    role: .destructive,
+                    action: .confirmDeletetion(id: id),
+                    label: {
+                        TextState("Delete")
+                    }
+                )
+            }
+        )
+    }
+}

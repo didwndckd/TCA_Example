@@ -23,6 +23,7 @@ struct AddContactFeature {
     }
     
     // @Shared로 부모의 데이터를 공유, 처리하는 방법도 있음
+    @CasePathable // case와 연관값에 바로 접근 가능하게 해주는 매크로: ex) delegate.saveContact
     enum Delegate: Equatable {
 //        case cancel
         case saveContact(Contact)
