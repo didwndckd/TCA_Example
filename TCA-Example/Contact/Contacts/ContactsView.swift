@@ -22,12 +22,26 @@ struct ContactsView: View {
         .sheet(item: $store.scope(\.addContact, action: \.addContact)) { addContactStore in
             addContactView(store: addContactStore)
         }
+        .alert($store.scope(\.alert, action: \.alert))
     }
     
     private var list: some View {
         List {
             ForEach(store.contacts) { contact in
-                Text(contact.name)
+                row(contact)
+            }
+        }
+    }
+    
+    private func row(_ contact: Contact) -> some View {
+        HStack {
+            Text(contact.name)
+            Spacer()
+            Button {
+                store.send(.deleteButtonTapped(id: contact.id))
+            } label: {
+                Image(systemName: "trash")
+                    .foregroundColor(.red)
             }
         }
     }
