@@ -17,16 +17,20 @@ struct Contact: Equatable, Identifiable {
 struct ContactsFeature {
     @ObservableState
     struct State: Equatable {
-        var contacts: IdentifiedArrayOf<Contact> = []
-        
+        var contacts: IdentifiedArrayOf<Contact> = [
+            .init(id: UUID(), name: "Name 1"),
+            .init(id: UUID(), name: "Name 2"),
+            .init(id: UUID(), name: "Name 3"),
+        ]
         @Presents var destination: Destination.State?
+        var path = StackState<ContactDetailFeature.State>()
     }
     
     enum Action {
         case addButtonTapped
         case destination(PresentationAction<Destination.Action>)
         case deleteButtonTapped(id: Contact.ID)
-        
+        case path(StackActionOf<ContactDetailFeature>)
         @CasePathable
         enum Alert: Equatable {
             case confirmDeletetion(id: Contact.ID)
@@ -58,10 +62,22 @@ struct ContactsFeature {
             case .deleteButtonTapped(id: let id):
                 state.destination = .alert(.deleteConfirmation(id: id))
                 return .none
+                
+            case .path(.element(id: let id, action: .delegate(.confirmDeletion))):
+                guard let detailState = state.path[id: id] else { return .none }
+                state.contacts.remove(id: detailState.contact.id)
+                return .none
+//                return .send(.deleteButtonTapped(id: detailState.contact.id)) // 다른 이벤트로 넘기는것도 가능
+                
+            case .path:
+                return .none
             }
         }
         .ifLet(\.$destination, action: \.destination) {
             Destination.body
+        }
+        .forEach(\.path, action: \.path) {
+            ContactDetailFeature()
         }
     }
 }

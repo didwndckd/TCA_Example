@@ -12,13 +12,19 @@ struct ContactsView: View {
     @Bindable var store: StoreOf<ContactsFeature>
     
     var body: some View {
-        NavigationStack {
-            list
-            .navigationTitle("Contacts")
-            .toolbar {
-                ToolbarItem { plusButton }
+        NavigationStack(
+            path: $store.scope(\.path, action: \.path),
+            root: {
+                list
+                .navigationTitle("Contacts")
+                .toolbar {
+                    ToolbarItem { plusButton }
+                }
+            },
+            destination: { store in
+                ContactDetailView(store: store)
             }
-        }
+        )
         .sheet(item: $store.scope(\.$destination, action: \.destination).addContact) { addContactStore in
             addContactView(store: addContactStore)
         }
@@ -38,16 +44,23 @@ struct ContactsView: View {
     }
     
     private func row(_ contact: Contact) -> some View {
-        HStack {
-            Text(contact.name)
-            Spacer()
-            Button {
-                store.send(.deleteButtonTapped(id: contact.id))
-            } label: {
-                Image(systemName: "trash")
-                    .foregroundColor(.red)
+        NavigationLink(state: ContactDetailFeature.State(contact: contact)) {
+            HStack {
+                Text(contact.name)
+                Spacer()
+                deleteButton(contact)
             }
         }
+    }
+    
+    private func deleteButton(_ contact: Contact) -> some View {
+        Button {
+            store.send(.deleteButtonTapped(id: contact.id))
+        } label: {
+            Image(systemName: "trash")
+                .foregroundColor(.red)
+        }
+        .buttonStyle(.borderless)
     }
     
     private var plusButton: some View {
