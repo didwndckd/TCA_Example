@@ -31,11 +31,25 @@
 		311F006A30278D1400146D7D /* TCA-Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TCA-Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		311F007730278D1600146D7D /* TCA-ExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TCA-ExampleTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		311F008130278D1600146D7D /* TCA-ExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TCA-ExampleUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3146071B3031EF0D00B19328 /* TCA-Example.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TCA-Example.xctestplan"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		316D44543030D7A0006E87B1 /* Exceptions for "TCA-Example" folder in "TCA-Example" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 311F006930278D1400146D7D /* TCA-Example */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		311F006C30278D1400146D7D /* TCA-Example */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				316D44543030D7A0006E87B1 /* Exceptions for "TCA-Example" folder in "TCA-Example" target */,
+			);
 			path = "TCA-Example";
 			sourceTree = "<group>";
 		};
@@ -80,6 +94,7 @@
 		311F006130278D1400146D7D = {
 			isa = PBXGroup;
 			children = (
+				3146071B3031EF0D00B19328 /* TCA-Example.xctestplan */,
 				311F006C30278D1400146D7D /* TCA-Example */,
 				311F007A30278D1600146D7D /* TCA-ExampleTests */,
 				311F008430278D1600146D7D /* TCA-ExampleUITests */,
@@ -409,6 +424,7 @@
 				DEVELOPMENT_TEAM = 3S767N4AG9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "TCA-Example/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -423,7 +439,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
@@ -441,6 +457,7 @@
 				DEVELOPMENT_TEAM = 3S767N4AG9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "TCA-Example/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -455,7 +472,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
